@@ -1,0 +1,43 @@
+version: "3.7"
+services:
+    tagger:
+        build: .
+        ports:
+          - "5000:5000"
+        env_file:
+          - docker.env
+    finer-wrapper:
+        build: https://github.com/SemanticComputing/finer-service.git
+        env_file:
+          - docker.env
+    finer:
+        image: hsci/finer
+        env_file:
+          - docker.env
+    turku-neural-parser-wrapper:
+        build: https://github.com/SemanticComputing/finnish-dep-parser-wrapper.git
+        env_file:
+          - docker.env
+    turku-neural-parser:
+        image: hsci/turku-neural-parser-openshift
+        command: server fi_tdt parse_plaintext
+    regex-service:
+        build: https://github.com/SemanticComputing/reksi.git
+        env_file:
+          - docker.env
+    name-finder:
+        build: https://github.com/SemanticComputing/person-name-finder.git
+        env_file:
+          - docker.env
+    las-wrapper:
+        build: https://github.com/SemanticComputing/las-wrapper.git
+        env_file:
+          - docker.env
+    las:
+        image: jiemakel/las-ws:1.1
+    finbert-ner:
+        build:
+          context: https://github.com/SemanticComputing/pertti.git
+          dockerfile: Dockerfile.self-contained
+        env_file:
+          - docker.env

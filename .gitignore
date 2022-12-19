@@ -1,0 +1,15 @@
+.idea/workspace.xml 
+.idea/*
+tagger/*
+venv/*
+*.ttl
+*.log
+*.pyc
+*.egg
+*.zip
+bin/*
+language-resources/organization.txt
+lib64/*
+logs/.namefinder.log.swp
+pyvenv.cfg
+

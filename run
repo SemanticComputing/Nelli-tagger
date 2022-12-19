@@ -1,0 +1,15 @@
+#!/bin/sh
+
+if [ $LOG_LEVEL ]; then
+  sed -i -E s/^level=.+$/level=$LOG_LEVEL/ $LOG_CONF_FILE
+fi
+
+sed -i "s|http://nlp.ldf.fi/finer|http://$IP_BACKEND_FINER_WRAPPER:$PORT_BACKEND_FINER_WRAPPER|" "$CONF_FILE"
+sed -i "s|http://86.50.253.19:8001/tagdemo/tag|http://$IP_BACKEND_FINBERT_NER:$PORT_BACKEND_FINBERT_NER|" "$CONF_FILE"
+sed -i "s|http://nlp.ldf.fi/dep-parser|http://$IP_BACKEND_FIN_DEP_PARSER_WRAPPER:$PORT_BACKEND_FIN_DEP_PARSER_WRAPPER|" "$CONF_FILE"
+sed -i "s|http://nlp.ldf.fi/las|http://$IP_BACKEND_LAS_WRAPPER:$PORT_BACKEND_LAS_WRAPPER|" "$CONF_FILE"
+sed -i "s|http://nlp.ldf.fi/name-finder|http://$IP_BACKEND_NAME_FINDER:$PORT_BACKEND_NAME_FINDER|" "$CONF_FILE"
+sed -i "s|http://nlp.ldf.fi/regex|http://$IP_BACKEND_REGEX:$PORT_BACKEND_REGEX|" "$CONF_FILE"
+sed -i "s|http://demo.seco.tkk.fi|http://$IP_BACKEND_LAS:$PORT_BACKEND_LAS|" "$CONF_FILE"
+
+$GUNICORN_BIN $GUNICORN_RELOAD -w $GUNICORN_WORKER_AMOUNT -t $GUNICORN_TIMEOUT -b 0.0.0.0:5000 src.run:app
